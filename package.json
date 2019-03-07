@@ -1,6 +1,7 @@
 {
   "name": "vue-calendar-easy",
-  "version": "0.1.8",
+  "version": "0.2.1",
+  "description": "A easy to use calendar component",
   "keywords": [
     "vue",
     "calendar",
@@ -9,6 +10,12 @@
     "vue-calendar-easy"
   ],
   "main": "dist/vue-calendar-easy.umd.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JS-an/vue-calendar-easy.git"
+  },
+  "author": "JS-an <987425154@qq.com>",
+  "homepage": "https://github.com/JS-an/vue-calendar-easy",
   "licenses": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",

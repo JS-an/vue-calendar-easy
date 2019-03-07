@@ -442,6 +442,20 @@ module.exports = function () {
 
 /***/ }),
 
+/***/ "0d58":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = __webpack_require__("ce10");
+var enumBugKeys = __webpack_require__("e11e");
+
+module.exports = Object.keys || function keys(O) {
+  return $keys(O, enumBugKeys);
+};
+
+
+/***/ }),
+
 /***/ "0fc9":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -474,6 +488,26 @@ exports.f = __webpack_require__("9e1e") ? gOPD : function getOwnPropertyDescript
     return gOPD(O, P);
   } catch (e) { /* empty */ }
   if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+};
+
+
+/***/ }),
+
+/***/ "1495":
+/***/ (function(module, exports, __webpack_require__) {
+
+var dP = __webpack_require__("86cc");
+var anObject = __webpack_require__("cb7c");
+var getKeys = __webpack_require__("0d58");
+
+module.exports = __webpack_require__("9e1e") ? Object.defineProperties : function defineProperties(O, Properties) {
+  anObject(O);
+  var keys = getKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  return O;
 };
 
 
@@ -874,6 +908,54 @@ __webpack_require__("8378").inspectSource = function (it) {
 })(Function.prototype, TO_STRING, function toString() {
   return typeof this == 'function' && this[SRC] || $toString.call(this);
 });
+
+
+/***/ }),
+
+/***/ "2aeb":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+var anObject = __webpack_require__("cb7c");
+var dPs = __webpack_require__("1495");
+var enumBugKeys = __webpack_require__("e11e");
+var IE_PROTO = __webpack_require__("613b")('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
+
+// Create object with fake `null` prototype: use iframe Object with cleared prototype
+var createDict = function () {
+  // Thrash, waste and sodomy: IE GC bug
+  var iframe = __webpack_require__("230e")('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
+  iframe.style.display = 'none';
+  __webpack_require__("fab2").appendChild(iframe);
+  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+  // createDict = iframe.contentWindow.Object;
+  // html.removeChild(iframe);
+  iframeDocument = iframe.contentWindow.document;
+  iframeDocument.open();
+  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+  iframeDocument.close();
+  createDict = iframeDocument.F;
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  return createDict();
+};
+
+module.exports = Object.create || function create(O, Properties) {
+  var result;
+  if (O !== null) {
+    Empty[PROTOTYPE] = anObject(O);
+    result = new Empty();
+    Empty[PROTOTYPE] = null;
+    // add "__proto__" for Object.getPrototypeOf polyfill
+    result[IE_PROTO] = O;
+  } else result = createDict();
+  return Properties === undefined ? result : dPs(result, Properties);
+};
 
 
 /***/ }),
@@ -2487,7 +2569,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, "*{-webkit-box-sizing:border-box;box-sizing:border-box}.calendar{z-index:9;padding:10px;border:1px solid #ccc;line-height:normal}.calendar,.calendar .calendar-wrap{display:inline-block;white-space:nowrap}.calendar .calendar-wrap{vertical-align:top;padding:5px}.calendar .calendar-header{position:relative;font-size:16px;text-align:center}.calendar .calendar-header span{margin:0 5px;font-size:18px;cursor:pointer;-webkit-transition:all .3s;transition:all .3s}.calendar .calendar-header span.year-range{cursor:default}.calendar .calendar-header span:not(.year-range):hover{color:#60acfc}.calendar .calendar-header .icon{position:absolute;top:50%;opacity:.6;-webkit-transform:translateY(-50%);transform:translateY(-50%);cursor:pointer;-webkit-transition:opacity .3s;transition:opacity .3s}.calendar .calendar-header .icon:hover{opacity:1}.calendar .calendar-header .icon-left{left:10px}.calendar .calendar-header .icon-right{right:10px}.calendar-date{overflow:hidden;display:table;width:100%;border-collapse:collapse;margin:0}.calendar-date .calendar-date-body{position:relative;display:table;width:100%;height:100%}.calendar-date .calendar-date-body tr{border:none;outline:none;-webkit-box-shadow:none;box-shadow:none}.calendar-date .calendar-date-body td,.calendar-date .calendar-date-body th{width:14;text-align:center;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;border:none;cursor:pointer;font-size:14px;padding:0}.calendar-date .calendar-date-body th{color:#333}.calendar-date .calendar-date-body td{position:relative;-webkit-transition:all .2s;transition:all .2s}.calendar-date .calendar-date-body td:not(.custom_style){border:1px solid #fff;background-color:#efefef}.calendar-date .calendar-date-body td:not(.custom_style).cur_month{color:#333;font-weight:600}.calendar-date .calendar-date-body td:not(.custom_style).next_month,.calendar-date .calendar-date-body td:not(.custom_style).prev_month{color:#777;background-color:#f7f7f7}.calendar-date .calendar-date-body td:not(.custom_style).next_month.active,.calendar-date .calendar-date-body td:not(.custom_style).next_month.inRange,.calendar-date .calendar-date-body td:not(.custom_style).prev_month.active,.calendar-date .calendar-date-body td:not(.custom_style).prev_month.inRange{opacity:.66}.calendar-date .calendar-date-body td:not(.custom_style).today{-webkit-box-shadow:inset 0 0 0 1px #60acfc;box-shadow:inset 0 0 0 1px #60acfc}.calendar-date .calendar-date-body td:not(.custom_style).inRange{background-color:#fff}.calendar-date .calendar-date-body td:not(.custom_style).active{color:#f7f7f7;background-color:#60acfc;cursor:default}.calendar-date .calendar-date-body td:not(.custom_style).disabled{color:#ccc;cursor:not-allowed;font-weight:400}.calendar-date .calendar-date-body td:not(.custom_style):not(.active).isHover,.calendar-date .calendar-date-body td:not(.custom_style):not(.disabled):not(.active):hover{color:#f7f7f7;background-color:#60acfc}.calendar-month,.calendar-year{overflow-x:hidden;white-space:pre-wrap;font-size:0}.calendar-month .calendar-month-item,.calendar-month .calendar-year-item,.calendar-year .calendar-month-item,.calendar-year .calendar-year-item{position:relative;display:inline-block;font-size:18px;cursor:pointer;-webkit-transition:all .3s;transition:all .3s}.calendar-month .calendar-month-item:not(.custom_style),.calendar-month .calendar-year-item:not(.custom_style),.calendar-year .calendar-month-item:not(.custom_style),.calendar-year .calendar-year-item:not(.custom_style){border:1px solid #f7f7f7;background-color:#efefef}.calendar-month .calendar-month-item:not(.custom_style).custom_style,.calendar-month .calendar-year-item:not(.custom_style).custom_style,.calendar-year .calendar-month-item:not(.custom_style).custom_style,.calendar-year .calendar-year-item:not(.custom_style).custom_style{border:none}.calendar-month .calendar-month-item:not(.custom_style).today,.calendar-month .calendar-year-item:not(.custom_style).today,.calendar-year .calendar-month-item:not(.custom_style).today,.calendar-year .calendar-year-item:not(.custom_style).today{-webkit-box-shadow:inset 0 0 0 1px #60acfc;box-shadow:inset 0 0 0 1px #60acfc}.calendar-month .calendar-month-item:not(.custom_style).active,.calendar-month .calendar-year-item:not(.custom_style).active,.calendar-year .calendar-month-item:not(.custom_style).active,.calendar-year .calendar-year-item:not(.custom_style).active{color:#f7f7f7;background-color:#60acfc}.calendar-month .calendar-month-item:not(.custom_style).disabled,.calendar-month .calendar-year-item:not(.custom_style).disabled,.calendar-year .calendar-month-item:not(.custom_style).disabled,.calendar-year .calendar-year-item:not(.custom_style).disabled{color:#ccc;cursor:not-allowed;font-weight:400}.calendar-month .calendar-month-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-month .calendar-year-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-year .calendar-month-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-year .calendar-year-item:not(.custom_style):not(.disabled):not(.active):hover{color:#f7f7f7;background-color:#60acfc}.calendar-month .calendar-month-item{width:25%;height:33.33333%}.calendar-year .calendar-year-item{width:25%;height:20%}.calendar-date-slot{position:absolute;top:0;left:0;width:100%;height:100%;text-align:left;white-space:normal}.calendar-date-slot .calendar-date-default-slot{display:inline-block;position:absolute;left:50%;top:50%;white-space:nowrap;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}", ""]);
+exports.push([module.i, "*{-webkit-box-sizing:border-box;box-sizing:border-box}.calendar{z-index:9;padding:10px;border:1px solid #ccc;line-height:normal}.calendar,.calendar .calendar-wrap{display:inline-block;white-space:nowrap}.calendar .calendar-wrap{vertical-align:top;padding:5px}.calendar .calendar-header{position:relative;font-size:16px;text-align:center}.calendar .calendar-header span{margin:0 5px;font-size:18px;cursor:pointer;-webkit-transition:all .3s;transition:all .3s}.calendar .calendar-header span.year-range{cursor:default}.calendar .calendar-header span:not(.year-range):hover{color:#60acfc}.calendar .calendar-header .icon{width:18px;height:18px;position:absolute;top:50%;opacity:.6;-webkit-transform:translateY(-50%) rotate(45deg);transform:translateY(-50%) rotate(45deg);cursor:pointer;-webkit-transition:opacity .3s;transition:opacity .3s}.calendar .calendar-header .icon:hover{opacity:1}.calendar .calendar-header .icon-left{left:10px;border:2px solid grey;border-right:transparent;border-top:transparent}.calendar .calendar-header .icon-right{right:10px;border:2px solid grey;border-left:transparent;border-bottom:transparent}.calendar-date{overflow:hidden;display:table;width:100%;border-collapse:collapse;margin:0}.calendar-date .calendar-date-body{position:relative;display:table;width:100%;height:100%}.calendar-date .calendar-date-body tr{border:none;outline:none;-webkit-box-shadow:none;box-shadow:none}.calendar-date .calendar-date-body td,.calendar-date .calendar-date-body th{width:14;text-align:center;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;border:none;cursor:pointer;font-size:14px;padding:0}.calendar-date .calendar-date-body th{color:#333}.calendar-date .calendar-date-body td{position:relative;-webkit-transition:all .2s;transition:all .2s}.calendar-date .calendar-date-body td:not(.custom_style){border:1px solid #fff;background-color:#efefef}.calendar-date .calendar-date-body td:not(.custom_style).cur_month{color:#333;font-weight:600}.calendar-date .calendar-date-body td:not(.custom_style).next_month,.calendar-date .calendar-date-body td:not(.custom_style).prev_month{color:#777;background-color:#f7f7f7}.calendar-date .calendar-date-body td:not(.custom_style).next_month.active,.calendar-date .calendar-date-body td:not(.custom_style).next_month.inRange,.calendar-date .calendar-date-body td:not(.custom_style).prev_month.active,.calendar-date .calendar-date-body td:not(.custom_style).prev_month.inRange{opacity:.66}.calendar-date .calendar-date-body td:not(.custom_style).today{-webkit-box-shadow:inset 0 0 0 1px #60acfc;box-shadow:inset 0 0 0 1px #60acfc}.calendar-date .calendar-date-body td:not(.custom_style).inRange{background-color:#fff}.calendar-date .calendar-date-body td:not(.custom_style).active{color:#f7f7f7;background-color:#60acfc;cursor:default}.calendar-date .calendar-date-body td:not(.custom_style).disabled{color:#ccc;cursor:not-allowed;font-weight:400}.calendar-date .calendar-date-body td:not(.custom_style):not(.active).isHover,.calendar-date .calendar-date-body td:not(.custom_style):not(.disabled):not(.active):hover{color:#f7f7f7;background-color:#60acfc}.calendar-month,.calendar-year{overflow-x:hidden;white-space:pre-wrap;font-size:0}.calendar-month .calendar-month-item,.calendar-month .calendar-year-item,.calendar-year .calendar-month-item,.calendar-year .calendar-year-item{position:relative;display:inline-block;font-size:18px;cursor:pointer;-webkit-transition:all .3s;transition:all .3s}.calendar-month .calendar-month-item:not(.custom_style),.calendar-month .calendar-year-item:not(.custom_style),.calendar-year .calendar-month-item:not(.custom_style),.calendar-year .calendar-year-item:not(.custom_style){border:1px solid #f7f7f7;background-color:#efefef}.calendar-month .calendar-month-item:not(.custom_style).custom_style,.calendar-month .calendar-year-item:not(.custom_style).custom_style,.calendar-year .calendar-month-item:not(.custom_style).custom_style,.calendar-year .calendar-year-item:not(.custom_style).custom_style{border:none}.calendar-month .calendar-month-item:not(.custom_style).today,.calendar-month .calendar-year-item:not(.custom_style).today,.calendar-year .calendar-month-item:not(.custom_style).today,.calendar-year .calendar-year-item:not(.custom_style).today{-webkit-box-shadow:inset 0 0 0 1px #60acfc;box-shadow:inset 0 0 0 1px #60acfc}.calendar-month .calendar-month-item:not(.custom_style).active,.calendar-month .calendar-year-item:not(.custom_style).active,.calendar-year .calendar-month-item:not(.custom_style).active,.calendar-year .calendar-year-item:not(.custom_style).active{color:#f7f7f7;background-color:#60acfc}.calendar-month .calendar-month-item:not(.custom_style).disabled,.calendar-month .calendar-year-item:not(.custom_style).disabled,.calendar-year .calendar-month-item:not(.custom_style).disabled,.calendar-year .calendar-year-item:not(.custom_style).disabled{color:#ccc;cursor:not-allowed;font-weight:400}.calendar-month .calendar-month-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-month .calendar-year-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-year .calendar-month-item:not(.custom_style):not(.disabled):not(.active):hover,.calendar-year .calendar-year-item:not(.custom_style):not(.disabled):not(.active):hover{color:#f7f7f7;background-color:#60acfc}.calendar-month .calendar-month-item{width:25%;height:33.33333%}.calendar-year .calendar-year-item{width:25%;height:20%}.calendar-date-slot{position:absolute;top:0;left:0;width:100%;height:100%;text-align:left;white-space:normal}.calendar-date-slot .calendar-date-default-slot{display:inline-block;position:absolute;left:50%;top:50%;white-space:nowrap;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}", ""]);
 
 // exports
 
@@ -2699,6 +2781,43 @@ module.exports = __webpack_require__("8aae");
 
 /***/ }),
 
+/***/ "aa77":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__("5ca1");
+var defined = __webpack_require__("be13");
+var fails = __webpack_require__("79e5");
+var spaces = __webpack_require__("fdef");
+var space = '[' + spaces + ']';
+var non = '\u200b\u0085';
+var ltrim = RegExp('^' + space + space + '*');
+var rtrim = RegExp(space + space + '*$');
+
+var exporter = function (KEY, exec, ALIAS) {
+  var exp = {};
+  var FORCE = fails(function () {
+    return !!spaces[KEY]() || non[KEY]() != non;
+  });
+  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
+  if (ALIAS) exp[ALIAS] = fn;
+  $export($export.P + $export.F * FORCE, 'String', exp);
+};
+
+// 1 -> String#trimLeft
+// 2 -> String#trimRight
+// 3 -> String#trim
+var trim = exporter.trim = function (string, TYPE) {
+  string = String(defined(string));
+  if (TYPE & 1) string = string.replace(ltrim, '');
+  if (TYPE & 2) string = string.replace(rtrim, '');
+  return string;
+};
+
+module.exports = exporter;
+
+
+/***/ }),
+
 /***/ "aae3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2877,6 +2996,83 @@ var enumBugKeys = __webpack_require__("1691");
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
+
+
+/***/ }),
+
+/***/ "c5f6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var global = __webpack_require__("7726");
+var has = __webpack_require__("69a8");
+var cof = __webpack_require__("2d95");
+var inheritIfRequired = __webpack_require__("5dbc");
+var toPrimitive = __webpack_require__("6a99");
+var fails = __webpack_require__("79e5");
+var gOPN = __webpack_require__("9093").f;
+var gOPD = __webpack_require__("11e9").f;
+var dP = __webpack_require__("86cc").f;
+var $trim = __webpack_require__("aa77").trim;
+var NUMBER = 'Number';
+var $Number = global[NUMBER];
+var Base = $Number;
+var proto = $Number.prototype;
+// Opera ~12 has broken Object#toString
+var BROKEN_COF = cof(__webpack_require__("2aeb")(proto)) == NUMBER;
+var TRIM = 'trim' in String.prototype;
+
+// 7.1.3 ToNumber(argument)
+var toNumber = function (argument) {
+  var it = toPrimitive(argument, false);
+  if (typeof it == 'string' && it.length > 2) {
+    it = TRIM ? it.trim() : $trim(it, 3);
+    var first = it.charCodeAt(0);
+    var third, radix, maxCode;
+    if (first === 43 || first === 45) {
+      third = it.charCodeAt(2);
+      if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
+    } else if (first === 48) {
+      switch (it.charCodeAt(1)) {
+        case 66: case 98: radix = 2; maxCode = 49; break; // fast equal /^0b[01]+$/i
+        case 79: case 111: radix = 8; maxCode = 55; break; // fast equal /^0o[0-7]+$/i
+        default: return +it;
+      }
+      for (var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++) {
+        code = digits.charCodeAt(i);
+        // parseInt parses a string to a first unavailable symbol
+        // but ToNumber should return NaN if a string contains unavailable symbols
+        if (code < 48 || code > maxCode) return NaN;
+      } return parseInt(digits, radix);
+    }
+  } return +it;
+};
+
+if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
+  $Number = function Number(value) {
+    var it = arguments.length < 1 ? 0 : value;
+    var that = this;
+    return that instanceof $Number
+      // check on 1..constructor(foo) case
+      && (BROKEN_COF ? fails(function () { proto.valueOf.call(that); }) : cof(that) != NUMBER)
+        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
+  };
+  for (var keys = __webpack_require__("9e1e") ? gOPN(Base) : (
+    // ES3:
+    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
+    // ES6 (in case, if modules with ES6 Number statics required before):
+    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
+    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
+  ).split(','), j = 0, key; keys.length > j; j++) {
+    if (has(Base, key = keys[j]) && !has($Number, key)) {
+      dP($Number, key, gOPD(Base, key));
+    }
+  }
+  $Number.prototype = proto;
+  proto.constructor = $Number;
+  __webpack_require__("2aba")(global, NUMBER, $Number);
+}
 
 
 /***/ }),
@@ -3229,6 +3425,15 @@ module.exports = __webpack_require__("5537")('native-function-to-string', Functi
 
 /***/ }),
 
+/***/ "fab2":
+/***/ (function(module, exports, __webpack_require__) {
+
+var document = __webpack_require__("7726").document;
+module.exports = document && document.documentElement;
+
+
+/***/ }),
+
 /***/ "fb15":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3248,12 +3453,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e32cdaf0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendar.vue?vue&type=template&id=3595248a&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.component_class,style:(_vm.component_style)},[_vm._l((_vm.calendars),function(mode,i){return [_c('CalendarDate',{directives:[{name:"show",rawName:"v-show",value:(mode === 'date'),expression:"mode === 'date'"}],key:("date" + i),ref:("date" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"default_date":_vm.months[i],"daterange":_vm.daterange,"date":_vm.date,"date_range":_vm.date_range,"hover_range":_vm.hover_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"days":_vm.days,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"update:hover_range":function($event){_vm.hover_range=$event},"get_day":_vm.getDate,"click_month":function (obj) { return _vm.setMonth(obj, i); },"click_year":function (obj) { return _vm.setYear(obj, i); },"change":_vm.setLinkageRange},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("default",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v("\n            "+_vm._s(obj.day)+"\n          ")])],{"date":obj.date,"day":obj.day,"month":obj.month,"year":obj.year,"prev_month":obj.prev_month,"next_month":obj.next_month,"in_range":obj.in_range,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)}),_c('CalendarMonth',{directives:[{name:"show",rawName:"v-show",value:(mode === 'month'),expression:"mode === 'month'"}],key:("month" + i),ref:("month" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"daterange":_vm.daterange,"date":_vm.date,"date_range":_vm.date_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"get_month":function (obj) { return _vm.getMonth(obj, i); },"click_year":function (obj) { return _vm.setYear(obj, i); }},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("month",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.month + 1)+"月")])],{"date":obj.date,"month":obj.month,"year":obj.year,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)}),_c('CalendarYear',{directives:[{name:"show",rawName:"v-show",value:(mode === 'year'),expression:"mode === 'year'"}],key:("year" + i),ref:("year" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"daterange":_vm.daterange,"date":_vm.date,"date_range":_vm.date_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"get_year":function (obj) { return _vm.getYear(obj, i); }},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("year",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.year))])],{"date":obj.date,"year":obj.year,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)})]})],2)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"502f09c2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendar.vue?vue&type=template&id=1fea5b54&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.component_class,style:(_vm.component_style)},[_vm._l((_vm.calendars),function(mode,i){return [_c('CalendarDate',{directives:[{name:"show",rawName:"v-show",value:(mode === 'date'),expression:"mode === 'date'"}],key:("date" + i),ref:("date" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"default_date":_vm.months[i],"daterange":_vm.daterange,"date":_vm.date,"date_range":_vm.date_range,"hover_range":_vm.hover_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"days":_vm.days,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"update:hover_range":function($event){_vm.hover_range=$event},"get_day":_vm.getDate,"click_month":function (obj) { return _vm.setMonth(obj, i); },"click_year":function (obj) { return _vm.setYear(obj, i); },"change":_vm.setLinkageRange},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("default",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v("\n            "+_vm._s(obj.day)+"\n          ")])],{"date":obj.date,"day":obj.day,"month":obj.month,"year":obj.year,"prev_month":obj.prev_month,"next_month":obj.next_month,"in_range":obj.in_range,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)}),_c('CalendarMonth',{directives:[{name:"show",rawName:"v-show",value:(mode === 'month'),expression:"mode === 'month'"}],key:("month" + i),ref:("month" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"daterange":_vm.daterange,"date":_vm.date,"date_range":_vm.date_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"get_month":function (obj) { return _vm.getMonth(obj, i); },"click_year":function (obj) { return _vm.setYear(obj, i); }},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("month",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.month + 1)+"月")])],{"date":obj.date,"month":obj.month,"year":obj.year,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)}),_c('CalendarYear',{directives:[{name:"show",rawName:"v-show",value:(mode === 'year'),expression:"mode === 'year'"}],key:("year" + i),ref:("year" + i),refInFor:true,class:_vm.wrap_class,style:(_vm.wrap_style),attrs:{"daterange":_vm.daterange,"date":_vm.date,"years":_vm.years,"year_start":_vm.year_start,"date_range":_vm.date_range,"height":_vm.calendar_height,"header_height":_vm.header_height,"filter":function (date, type) { return _vm.filter(date, type, i); },"custom_style":_vm.custom_style},on:{"get_year":function (obj) { return _vm.getYear(obj, i); }},scopedSlots:_vm._u([{key:"default",fn:function(obj){return [_vm._t("year",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.year))])],{"date":obj.date,"year":obj.year,"disabled":obj.disabled,"active":obj.active,"today":obj.today})]}}],null,true)})]})],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./lib/calendar.vue?vue&type=template&id=3595248a&
+// CONCATENATED MODULE: ./lib/calendar.vue?vue&type=template&id=1fea5b54&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/array/from.js
 var from = __webpack_require__("774e");
@@ -3263,8 +3468,11 @@ var from_default = /*#__PURE__*/__webpack_require__.n(from);
 var keys = __webpack_require__("a4bb");
 var keys_default = /*#__PURE__*/__webpack_require__.n(keys);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e32cdaf0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarYear.vue?vue&type=template&id=2d90080a&
-var calendarYearvue_type_template_id_2d90080a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{attrs:{"name":"left"},nativeOn:{"click":function($event){_vm.year -= _vm.YEARS}}}),_c('span',{staticClass:"year-range"},[_vm._v(_vm._s(_vm.year_start)+" - "+_vm._s(_vm.year_start + _vm.YEARS))]),_c('div',{attrs:{"name":"right"},nativeOn:{"click":function($event){_vm.year += _vm.YEARS}}})]),_c('div',{class:_vm.component_class,style:(_vm.component_style)},_vm._l((_vm.allYear),function(obj,i){return _c('div',{key:i,class:[
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
+var es6_number_constructor = __webpack_require__("c5f6");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"502f09c2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarYear.vue?vue&type=template&id=7e0774ce&
+var calendarYearvue_type_template_id_7e0774ce_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{staticClass:"icon icon-left",on:{"click":function($event){_vm.Year_start -= _vm.YEARS}}}),_c('span',{staticClass:"year-range"},[_vm._v(_vm._s(_vm.Year_start)+" - "+_vm._s(_vm.Year_start + _vm.YEARS))]),_c('div',{staticClass:"icon icon-right",on:{"click":function($event){_vm.Year_start += _vm.YEARS}}})]),_c('div',{class:_vm.component_class,style:(_vm.component_style)},_vm._l((_vm.allYear),function(obj,i){return _c('div',{key:i,class:[
         obj.classname,
         {
           custom_style: _vm.custom_style,
@@ -3273,10 +3481,10 @@ var calendarYearvue_type_template_id_2d90080a_render = function () {var _vm=this
           active: obj.active
         }
       ],on:{"click":function($event){return _vm.clickYear(obj)}}},[_c('div',{staticClass:"calendar-date-slot"},[_vm._t("default",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.year))])],{"date":obj.date,"year":obj.year,"disabled":obj.disabled,"active":obj.active,"today":obj.isToday})],2)])}),0)])}
-var calendarYearvue_type_template_id_2d90080a_staticRenderFns = []
+var calendarYearvue_type_template_id_7e0774ce_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./lib/calendarYear.vue?vue&type=template&id=2d90080a&
+// CONCATENATED MODULE: ./lib/calendarYear.vue?vue&type=template&id=7e0774ce&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js
 var get_own_property_descriptor = __webpack_require__("268f");
@@ -3397,6 +3605,7 @@ var isSameDate = function isSameDate(date1, date2, type) {
 };
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarYear.vue?vue&type=script&lang=js&
 
+
 //
 //
 //
@@ -3440,6 +3649,8 @@ var today = new Date();
 /* harmony default export */ var calendarYearvue_type_script_lang_js_ = ({
   name: 'CalendarYear',
   props: {
+    years: Number,
+    year_start: Number,
     daterange: Boolean,
     date: [Object, Date],
     date_range: Array,
@@ -3457,8 +3668,10 @@ var today = new Date();
   },
   data: function data() {
     return {
-      YEARS: 20,
-      year: this.date ? this.date.getFullYear() : today.getFullYear()
+      YEARS: this.years,
+      // 多少年
+      // year: this.date ? this.date.getFullYear() : today.getFullYear() // 年份
+      Year_start: this.year_start
     };
   },
   computed: {
@@ -3484,10 +3697,10 @@ var today = new Date();
       var result = [];
 
       for (var i = 0; i < this.YEARS; i++) {
-        var date = new Date(this.year_start + i, 0, 1);
+        var date = new Date(this.Year_start + i, 0, 1);
         var filter_result = this.filter ? this.filter(date, 'year') : {};
         result.push(_objectSpread({
-          year: this.year_start + i,
+          year: this.Year_start + i,
           date: date,
           active: this.isActive(date),
           classname: "".concat(prefixCls, "-item")
@@ -3495,9 +3708,6 @@ var today = new Date();
       }
 
       return result;
-    },
-    year_start: function year_start() {
-      return ~~(this.year / 20) * 20;
     }
   },
   methods: {
@@ -3627,8 +3837,8 @@ function normalizeComponent (
 
 var component = normalizeComponent(
   lib_calendarYearvue_type_script_lang_js_,
-  calendarYearvue_type_template_id_2d90080a_render,
-  calendarYearvue_type_template_id_2d90080a_staticRenderFns,
+  calendarYearvue_type_template_id_7e0774ce_render,
+  calendarYearvue_type_template_id_7e0774ce_staticRenderFns,
   false,
   null,
   null,
@@ -3637,8 +3847,8 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var calendarYear = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e32cdaf0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarMonth.vue?vue&type=template&id=13aec8e6&
-var calendarMonthvue_type_template_id_13aec8e6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{attrs:{"name":"left"},nativeOn:{"click":function($event){_vm.year--}}}),_c('span',{on:{"click":function($event){return _vm.$emit('click_year', { year: _vm.year })}}},[_vm._v(_vm._s(_vm.year)+"年")]),_c('div',{attrs:{"name":"right"},nativeOn:{"click":function($event){_vm.year++}}})]),_c('div',{class:_vm.component_class,style:(_vm.component_style)},_vm._l((_vm.allMonth),function(obj,i){return _c('div',{key:i,class:[
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"502f09c2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarMonth.vue?vue&type=template&id=99d4294e&
+var calendarMonthvue_type_template_id_99d4294e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{staticClass:"icon icon-left",on:{"click":function($event){_vm.year--}}}),_c('span',{on:{"click":function($event){return _vm.$emit('click_year', { year: _vm.year })}}},[_vm._v(_vm._s(_vm.year)+"年")]),_c('div',{staticClass:"icon icon-right",on:{"click":function($event){_vm.year++}}})]),_c('div',{class:_vm.component_class,style:(_vm.component_style)},_vm._l((_vm.allMonth),function(obj,i){return _c('div',{key:i,class:[
         obj.classname,
         {
           custom_style: _vm.custom_style,
@@ -3647,10 +3857,10 @@ var calendarMonthvue_type_template_id_13aec8e6_render = function () {var _vm=thi
           active: obj.active
         }
       ],on:{"click":function($event){return _vm.clickMonth(obj)}}},[_c('div',{staticClass:"calendar-date-slot"},[_vm._t("default",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v(_vm._s(obj.month + 1)+"月")])],{"date":obj.date,"month":obj.month,"year":_vm.year,"disabled":obj.disabled,"active":obj.active,"today":obj.isToday})],2)])}),0)])}
-var calendarMonthvue_type_template_id_13aec8e6_staticRenderFns = []
+var calendarMonthvue_type_template_id_99d4294e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./lib/calendarMonth.vue?vue&type=template&id=13aec8e6&
+// CONCATENATED MODULE: ./lib/calendarMonth.vue?vue&type=template&id=99d4294e&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarMonth.vue?vue&type=script&lang=js&
 
@@ -3788,8 +3998,8 @@ var calendarMonthvue_type_script_lang_js_today = new Date();
 
 var calendarMonth_component = normalizeComponent(
   lib_calendarMonthvue_type_script_lang_js_,
-  calendarMonthvue_type_template_id_13aec8e6_render,
-  calendarMonthvue_type_template_id_13aec8e6_staticRenderFns,
+  calendarMonthvue_type_template_id_99d4294e_render,
+  calendarMonthvue_type_template_id_99d4294e_staticRenderFns,
   false,
   null,
   null,
@@ -3798,8 +4008,8 @@ var calendarMonth_component = normalizeComponent(
 )
 
 /* harmony default export */ var calendarMonth = (calendarMonth_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e32cdaf0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarDate.vue?vue&type=template&id=2347b44d&
-var calendarDatevue_type_template_id_2347b44d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.filter(new Date(_vm.year, _vm.month - 1), 'month').disabled),expression:"!filter(new Date(year, month - 1), 'month').disabled"}],attrs:{"name":"left"},nativeOn:{"click":function($event){return _vm.prevMonth($event)}}}),_c('span',{on:{"click":function($event){return _vm.$emit('click_year', { year: _vm.year, month: _vm.month })}}},[_vm._v(_vm._s(_vm.year)+"年")]),_c('span',{on:{"click":function($event){return _vm.$emit('click_month', { year: _vm.year, month: _vm.month })}}},[_vm._v(_vm._s(_vm.month + 1)+"月")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.filter(new Date(_vm.year, _vm.month + 1), 'month').disabled),expression:"!filter(new Date(year, month + 1), 'month').disabled"}],attrs:{"name":"right"},nativeOn:{"click":function($event){return _vm.nextMonth($event)}}})]),_c('table',{class:_vm.component_class,style:(_vm.component_style)},[_c('tbody',{staticClass:"calendar-date-body"},[_c('tr',_vm._l((_vm.days),function(d,i){return _c('th',{key:i},[_vm._v("\n          "+_vm._s(d)+"\n        ")])}),0),_vm._l((_vm.allDays),function(row,i){return _c('tr',{key:i},_vm._l((row),function(obj,i){return _c('td',{key:i,class:[
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"502f09c2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendarDate.vue?vue&type=template&id=1b5b1c99&
+var calendarDatevue_type_template_id_1b5b1c99_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('header',{class:_vm.header_class,style:(_vm.header_style)},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.filter(new Date(_vm.year, _vm.month - 1), 'month').disabled),expression:"!filter(new Date(year, month - 1), 'month').disabled"}],staticClass:"icon icon-left",on:{"click":_vm.prevMonth}}),_c('span',{on:{"click":function($event){return _vm.$emit('click_year', { year: _vm.year, month: _vm.month })}}},[_vm._v(_vm._s(_vm.year)+"年")]),_c('span',{on:{"click":function($event){return _vm.$emit('click_month', { year: _vm.year, month: _vm.month })}}},[_vm._v(_vm._s(_vm.month + 1)+"月")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.filter(new Date(_vm.year, _vm.month + 1), 'month').disabled),expression:"!filter(new Date(year, month + 1), 'month').disabled"}],staticClass:"icon icon-right",on:{"click":_vm.nextMonth}})]),_c('table',{class:_vm.component_class,style:(_vm.component_style)},[_c('tbody',{staticClass:"calendar-date-body"},[_c('tr',_vm._l((_vm.days),function(d,i){return _c('th',{key:i},[_vm._v("\n          "+_vm._s(d)+"\n        ")])}),0),_vm._l((_vm.allDays),function(row,i){return _c('tr',{key:i},_vm._l((row),function(obj,i){return _c('td',{key:i,class:[
             obj.classname,
             {
               custom_style: _vm.custom_style,
@@ -3810,10 +4020,10 @@ var calendarDatevue_type_template_id_2347b44d_render = function () {var _vm=this
               active: obj.active
             }
           ],on:{"click":function($event){return _vm.clickDay(obj)},"mouseenter":function($event){return _vm.mouseenterDay(obj)}}},[_vm._v(" \n          "),_c('div',{staticClass:"calendar-date-slot"},[_vm._t("default",[_c('span',{staticClass:"calendar-date-default-slot"},[_vm._v("\n                "+_vm._s(obj.day)+"\n              ")])],{"date":obj.date,"day":obj.day,"month":_vm.month,"year":_vm.year,"prev_month":!!obj.prev_month,"next_month":!!obj.next_month,"in_range":_vm.inRange(obj.date),"disabled":obj.disabled,"active":obj.active,"today":obj.isToday})],2)])}),0)})],2)])])}
-var calendarDatevue_type_template_id_2347b44d_staticRenderFns = []
+var calendarDatevue_type_template_id_1b5b1c99_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./lib/calendarDate.vue?vue&type=template&id=2347b44d&
+// CONCATENATED MODULE: ./lib/calendarDate.vue?vue&type=template&id=1b5b1c99&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.sort.js
 var es6_array_sort = __webpack_require__("55dd");
@@ -4085,8 +4295,8 @@ var calendarDatevue_type_script_lang_js_prefixCls = 'calendar-date';
 
 var calendarDate_component = normalizeComponent(
   lib_calendarDatevue_type_script_lang_js_,
-  calendarDatevue_type_template_id_2347b44d_render,
-  calendarDatevue_type_template_id_2347b44d_staticRenderFns,
+  calendarDatevue_type_template_id_1b5b1c99_render,
+  calendarDatevue_type_template_id_1b5b1c99_staticRenderFns,
   false,
   null,
   null,
@@ -4189,6 +4399,9 @@ var getUnableWeek = function getUnableWeek() {
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./lib/calendar.vue?vue&type=script&lang=js&
 
 
+
+//
+//
 //
 //
 //
@@ -4322,6 +4535,14 @@ var calendarvue_type_script_lang_js_prefixCls = 'calendar';
         return ['日', '一', '二', '三', '四', '五', '六'];
       }
     },
+    years: {
+      type: Number,
+      default: 20
+    },
+    year_start: {
+      type: Number,
+      default: 2000
+    },
     picker: {
       type: String,
       default: 'date'
@@ -4331,6 +4552,7 @@ var calendarvue_type_script_lang_js_prefixCls = 'calendar';
       default: true
     },
     daterange: {
+      // 日期范围
       type: Boolean,
       default: false
     },
@@ -4377,13 +4599,16 @@ var calendarvue_type_script_lang_js_prefixCls = 'calendar';
     custom_style: Boolean
   },
   model: {
+    // model选项
     prop: 'date',
-    event: 'change'
+    // v-model传入的值
+    event: 'change' // v-model触发的事件
+
   },
   data: function data() {
     return {
       today: new Date(),
-      year_range: 20,
+      year_range: 50,
       date_range: [],
       linkage_range: [],
       hover_range: [],
@@ -4587,7 +4812,8 @@ var calendarvue_type_script_lang_js_prefixCls = 'calendar';
   mounted: function mounted() {
     var _this8 = this;
 
-    this.initCalendar();
+    this.initCalendar(); //初始化日历
+
     this.initDateRange();
     this.date && this.$emit('update:format_date', this.display);
     this.calendars.length === 2 && this.$nextTick(function () {
@@ -4641,6 +4867,15 @@ var $Object = __webpack_require__("584a").Object;
 module.exports = function getOwnPropertyDescriptor(it, key) {
   return $Object.getOwnPropertyDescriptor(it, key);
 };
+
+
+/***/ }),
+
+/***/ "fdef":
+/***/ (function(module, exports) {
+
+module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
+  '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
 
 /***/ })

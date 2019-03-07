@@ -1,9 +1,9 @@
 <template>
   <div>
     <header :class="header_class" :style="header_style">
-      <div name="left" @click.native="year--"></div>
+      <div class="icon icon-left" @click="year--"></div>
       <span @click="$emit('click_year', { year })">{{ year }}年</span>
-      <div name="right" @click.native="year++"></div>
+      <div class="icon icon-right" @click="year++"></div>
     </header>
     <div :class="component_class" :style="component_style">
       <div

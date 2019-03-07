@@ -1,9 +1,9 @@
 <template>
   <div>
     <header :class="header_class" :style="header_style">
-      <div name="left" @click.native="year -= YEARS"></div>
-      <span class="year-range">{{ year_start }} - {{ year_start + YEARS }}</span>
-      <div name="right" @click.native="year += YEARS"></div>
+      <div class="icon icon-left" @click="Year_start -= YEARS"></div>
+      <span class="year-range">{{ Year_start }} - {{ Year_start + YEARS }}</span>
+      <div class="icon icon-right" @click="Year_start += YEARS"></div>
     </header>
     <div :class="component_class" :style="component_style">
       <div
@@ -40,10 +40,11 @@
 
   const prefixCls = 'calendar-year'
   const today = new Date()
-
   export default {
     name: 'CalendarYear',
     props: {
+      years: Number,
+      year_start: Number,
       daterange: Boolean,
       date: [Object, Date],
       date_range: Array,
@@ -61,8 +62,9 @@
     },
     data () {
       return {
-        YEARS: 20,
-        year: this.date ? this.date.getFullYear() : today.getFullYear()
+        YEARS: this.years, // 多少年
+        // year: this.date ? this.date.getFullYear() : today.getFullYear() // 年份
+        Year_start: this.year_start
       }
     },
     computed: {
@@ -92,10 +94,10 @@
         let result = []
 
         for (let i = 0; i < this.YEARS; i++) {
-          let date = new Date(this.year_start + i, 0, 1)
+          let date = new Date(this.Year_start + i, 0, 1)
           let filter_result = this.filter ? this.filter(date, 'year') : {}
           result.push({
-            year: this.year_start + i,
+            year: this.Year_start + i,
             date,
             active: this.isActive(date),
             classname: `${prefixCls}-item`,
@@ -105,9 +107,9 @@
 
         return result
       },
-      year_start () {
-        return ~~(this.year / 20) * 20
-      }
+      // year_start () {
+        // return ~~(this.year / 20) * 20 // 开始年份
+      // }
     },
     methods: {
       isActive (date) {

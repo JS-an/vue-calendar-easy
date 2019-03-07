@@ -83,6 +83,8 @@
         :style="wrap_style"
         :daterange="daterange"
         :date="date"
+        :years="years"
+        :year_start="year_start"
         :date_range="date_range"
         :height="calendar_height"
         :header_height="header_height"
@@ -134,6 +136,14 @@
           return ['日', '一', '二', '三', '四', '五', '六']
         }
       },
+      years: {
+        type: Number,
+        default: 20
+      },
+      year_start: {
+        type: Number,
+        default: 2000
+      },
       picker: {
         type: String,
         default: 'date'
@@ -142,7 +152,7 @@
         type: Boolean,
         default: true
       },
-      daterange: {
+      daterange: { // 日期范围
         type: Boolean,
         default: false
       },
@@ -186,14 +196,14 @@
       },
       custom_style: Boolean
     },
-    model: {
-      prop: 'date',
-      event: 'change'
+    model: { // model选项
+      prop: 'date', // v-model传入的值
+      event: 'change' // v-model触发的事件
     },
     data () {
       return {
         today: new Date(),
-        year_range: 20,
+        year_range: 50,
         date_range: [],
         linkage_range: [],
         hover_range: [],
@@ -381,7 +391,7 @@
       }
     },
     mounted () {
-      this.initCalendar()
+      this.initCalendar() //初始化日历
       this.initDateRange()
       this.date && this.$emit('update:format_date', this.display)
       this.calendars.length === 2 && this.$nextTick(() => this.setLinkageRange())
@@ -436,10 +446,12 @@ $year_row: 5;
     }
 
     .icon {
+      width: 18px;
+      height: 18px;
       position: absolute;
       top: 50%;
       opacity: .6;
-      transform: translateY(-50%);
+      transform: translateY(-50%) rotate(45deg);
       cursor: pointer;
       transition: opacity .3s;
 
@@ -450,10 +462,16 @@ $year_row: 5;
 
     .icon-left {
       left: 10px;
+      border: 2px solid gray;
+      border-right: transparent;
+      border-top: transparent;
     }
 
     .icon-right {
       right: 10px;
+      border: 2px solid gray;
+      border-left: transparent;
+      border-bottom: transparent;
     }
   }
 }

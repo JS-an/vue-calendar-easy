@@ -1,29 +1,23 @@
 # vue-calendar-easy
 
-## Project setup
+## install
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+npm install vue-calendar-easy --save 
 ```
 
-### Compiles and minifies for production
+## Usage
 ```
-npm run build
+<template>
+  <vue-calendar />
+</template>
+ 
+<script>
+import VueCalendar from 'vue-calendar-easy'
+ 
+export default {
+  components: {
+    VueCalendar
+  }
+}
+</script>
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

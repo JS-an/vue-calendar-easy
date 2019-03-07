@@ -1,10 +1,10 @@
 <template>
   <div>
     <header :class="header_class" :style="header_style">
-      <div v-show="!filter(new Date(year, month - 1), 'month').disabled" name="left" @click.native="prevMonth"></div>
+      <div v-show="!filter(new Date(year, month - 1), 'month').disabled" class="icon icon-left" @click="prevMonth"></div>
       <span @click="$emit('click_year', { year, month })">{{ year }}年</span>
       <span @click="$emit('click_month', { year, month })">{{ month + 1 }}月</span>
-      <div v-show="!filter(new Date(year, month + 1), 'month').disabled" name="right" @click.native="nextMonth"></div>
+      <div v-show="!filter(new Date(year, month + 1), 'month').disabled" class="icon icon-right" @click="nextMonth"></div>
     </header>
     <table :class="component_class" :style="component_style">
       <tbody class="calendar-date-body">
