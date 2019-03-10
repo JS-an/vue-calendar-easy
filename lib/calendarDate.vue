@@ -77,7 +77,7 @@
       days: {
         type: Array,
         default() {
-          return ['日', '一', '二', '三', '四', '五', '六']
+          return ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
         }
       },
       width: String,

@@ -1,7 +1,9 @@
 <template>
   <div>
     <Calendar
-      v-model="default_date">
+      v-model="default_date"
+      :format="'yyyy-MM'"
+      @complete="(d, t) => $toast(t)">
     </Calendar>
     <Calendar
       :daterange="true"
@@ -66,26 +68,6 @@
         </div>
       </template>
     </Calendar>
-    <!-- <Popover :placement="'bottom-left'" :ref="'popover'">
-      <Calendar
-        :daterange="true"
-        :begin_date.sync="begin_date"
-        :end_date.sync="end_date"
-        @complete="() => this.$refs.popover.close()">
-      </Calendar>
-      <Input slot="reference" v-model="format_date" :readonly="true" placeholder="no lazy" />
-    </Popover>
-
-    <Popover :placement="'bottom-left'" :ref="'lazy_popover'">
-      <Calendar
-        :daterange="true"
-        :begin_date.sync="lazy_begin_date"
-        :end_date.sync="lazy_end_date"
-        :lazy="false"
-        @complete="() => this.$refs.lazy_popover.close()">
-      </Calendar>
-      <Input slot="reference" v-model="lazy_format_date" :readonly="true" placeholder="lazy" />
-    </Popover> -->
   </div>
 </template>
 
@@ -99,6 +81,7 @@ export default {
   },
   data () {
     return {
+      aaa: null,
       // 默认单日期
       default_date: null, // 选中日期
       // 默认多日期
@@ -295,6 +278,7 @@ export default {
       if (type === 'date' && date.getDate() <= 7) return true
     },
     $toast (txt) {
+      console.log(typeof(txt))
       alert(txt)
     }
   }

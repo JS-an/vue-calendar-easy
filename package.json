@@ -1,6 +1,6 @@
 {
   "name": "vue-calendar-easy",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "A easy to use calendar component",
   "keywords": [
     "vue",
@@ -16,12 +16,14 @@
   },
   "author": "JS-an <987425154@qq.com>",
   "homepage": "https://github.com/JS-an/vue-calendar-easy",
-  "licenses": "MIT",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "package": "vue-cli-service build --target lib --name vue-calendar-easy lib/index.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -33,7 +35,8 @@
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.6.8",
-    "vue-template-compiler": "^2.6.8"
+    "vue-template-compiler": "^2.6.8",
+    "vuepress": "^1.0.0-alpha.42"
   },
   "eslintConfig": {
     "root": true,

@@ -133,7 +133,7 @@
       days: {
         type: Array,
         default() {
-          return ['日', '一', '二', '三', '四', '五', '六']
+          return ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
         }
       },
       years: {
@@ -487,6 +487,7 @@ $year_row: 5;
   .calendar-date-body {
     position: relative;
     display: table;
+    table-layout: fixed;
     width: 100%;
     height: 100%;
 
@@ -497,35 +498,35 @@ $year_row: 5;
     }
 
     th, td {
-      width: floor(100% / 7%);
       text-align: center;
       user-select: none;
       border: none;
       cursor: pointer;
-      font-size: 14px;
       padding: 0;
     }
 
     th {
       color: #333;
+      font-size: 10px;
     }
 
     td {
+      font-size: 14px;
       position: relative;
-      transition: all .2s;
+      transition: all .1s;
 
       &:not(.custom_style) {
         border: 1px solid #fff;
-        background-color: #efefef;
+        background-color: #efefef; // 当月显示时，当月没选中日期的背景颜色
 
         &.cur_month {
-          color: #333;
+          color: #333; // 当月显示时，当月没选中日期的数字颜色
           font-weight: 600;
         }
 
         &.prev_month, &.next_month {
-          color: #777;
-          background-color: #f7f7f7;
+          color: #777; // 当月显示时，上下月日期的数字颜色
+          background-color: #f7f7f7; // 当月显示时，上下月日期的背景颜色
 
           &.active, &.inRange {
             opacity: .66;
@@ -533,28 +534,29 @@ $year_row: 5;
         }
 
         &.today {
-          box-shadow: inset 0 0 0 1px #60acfc;
+          box-shadow: inset 0 0 0 1px #60acfc; // 今天的内边框
         }
 
         &.inRange {
-          background-color: lighten(#60acfc, 80%);
+          background-color: lighten(#60acfc, 10%); // 选中范围的背景颜色
+          // background-color: blue;
         }
 
         &.active {
-          color: #f7f7f7;
-          background-color: #60acfc;
+          color: red; // 鼠标选中date时的数字颜色
+          background-color: #60acfc; // 鼠标选中date时的背景颜色
           cursor: default;
         }
 
         &.disabled {
-          color: #ccc;
+          color: darkgray; // 禁用的数字颜色
           cursor: not-allowed;
           font-weight: normal;
         }
 
         &:not(.disabled):not(.active):hover, &:not(.active).isHover {
-          color: #f7f7f7;
-          background-color: #60acfc;
+          color: red; // 鼠标指向date时的数字颜色
+          background-color: #60acfc; // 鼠标指向date时的背景颜色
         }
       }
     }
@@ -577,29 +579,29 @@ $year_row: 5;
 
     &:not(.custom_style) {
       border: 1px solid #f7f7f7;
-      background-color: #efefef;
+      background-color: #efefef; // 年/月历显示时，没选中年/月的背景颜色
 
       &.custom_style {
         border: none;
       }
 
       &.today {
-        box-shadow: inset 0 0 0 1px #60acfc;
+        box-shadow: inset 0 0 0 1px #60acfc; // 年/月历显示时，今年/月的边框
       }
 
       &.active {
-        color: #f7f7f7;
+        color: #f7f7f7; // 年/月历显示时，选中年/月的数字颜色
         background-color: #60acfc;
       }
 
       &.disabled {
-        color: #ccc;
+        color: #ccc; // 年/月历显示时，禁用年/月的数字颜色
         cursor: not-allowed;
         font-weight: normal;
       }
 
       &:not(.disabled):not(.active):hover {
-        color: #f7f7f7;
+        color: red; // 年/月历显示时，鼠标指向年/月的数字颜色
         background-color: #60acfc;
       }
     }
