@@ -40,18 +40,13 @@ export default {
 | begin_date.sync | Date | null | When `:daterange="true"` is true, default start date |
 | end_date.sync | Date | null | When `:daterange="true"` is true, default end date |
 | lazy | Boolean | true | When `:daterange="true"` is true, allow lazy loading |
-| one_calendar | Boolean | false | When `:daterange="true"` is true,
-display a single calendar |
+| one_calendar | Boolean | false | When `:daterange="true"` is true, display a single calendar |
 | separator | String | ~ | Separator symbol |
-| defaultNextMonth | Boolean | true | When `:daterange="true"` is true,
-In multi-calendar mode,
-`true` shows the current month and next month,
-`false` shows last month and current month |
+| defaultNextMonth | Boolean | true | In multi-calendar mode, `true` shows the current month and next month, `false` shows last month and current month |
 | picker | String | date | Calendar type, `"date" / "month" / "year"` |
 | years | Number | 20 | Year range |
 | year_start | Number | 2000 | Start year |
-| rules | Array< String > | [] | Built-in filtering method,
-optional value please see below. |
+| rules | Array< String > | [] | Built-in filtering method, optional value please see below. |
 | custom_filter | Function | - | Please see below. |
 | mark_today | Boolean | true | Mark today |
 | calendar_width | String | '300px' | Calendar width |
@@ -59,22 +54,6 @@ optional value please see below. |
 | header_height | String | '40px' | Header height |
 | no_border | Boolean | false | Display border |
 | format | String | yyyy-MM-dd | Get formatted value |
-
-### event
-
-| event | Description | Callback Arguments |
-| ------ | ------ | ------ |
-| complete | Callback when the date changes |
-First: checked date(type: object) / checked date range(type: object)
-Second: format date(type: string) |
-
-### slot
-
-| slot | Description | Slot variables |
-| ------ | ------ | ------ |
-| default | Custom Calendar | in_range< Boolean >, year < Number >, month < Number >, day < Number > |
-| month | Custom Month Calendar | year < Number >, month < Number > |
-| year | Custom Year Calendar | year < Number > |
 
 ```js
 /*
@@ -101,3 +80,17 @@ const rules = [
   'unableSat' // 禁用周六
 ]
 ```
+
+### event
+
+| event | Description | Callback Arguments |
+| ------ | ------ | ------ |
+| complete | Callback when the date changes | date(type: object) / date_range(type: object), format_date(type: string) |
+
+### slot
+
+| slot | Description | Slot variables |
+| ------ | ------ | ------ |
+| default | Custom Calendar | in_range< Boolean >, year < Number >, month < Number >, day < Number > |
+| month | Custom Month Calendar | year < Number >, month < Number > |
+| year | Custom Year Calendar | year < Number > |
